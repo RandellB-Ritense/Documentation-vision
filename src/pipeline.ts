@@ -15,13 +15,11 @@ const apiKey = process.env.MISTRAL_API_KEY;
 const client = new Mistral({apiKey: apiKey});
 
 async function main() {
-    const videoPath = './testData/sample-video.mov'; // Replace with your video path
+    const videoPath = './testData/sample-video.mov';
 
-    // Extract frames from video
     console.log('Starting frame extraction...');
     console.log('');
 
-    // Extract 1 frame per second and audio
     const result = await extractFrames(videoPath, {
         fps: 1,
         format: 'png',
@@ -32,6 +30,7 @@ async function main() {
 
     console.log(`\nExtraction complete!`);
     console.log(`Total frames extracted: ${result.frameCount}`);
+
     if (result.audioPath) {
         console.log(`Audio extracted to: ${result.audioPath}`);
     }
