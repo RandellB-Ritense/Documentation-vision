@@ -1,0 +1,36 @@
+{
+  "name": "documentation-vision",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "npm run build && node dist/example.js",
+    "dev:pipeline": "tsx src/pipeline.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RandellB-Ritense/Documentation-vision.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RandellB-Ritense/Documentation-vision/issues"
+  },
+  "homepage": "https://github.com/RandellB-Ritense/Documentation-vision#readme",
+  "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.28",
+    "@types/node": "^25.0.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@mistralai/mistralai": "^1.11.0",
+    "dotenv": "^17.2.3",
+    "fluent-ffmpeg": "^2.1.3"
+  }
+}
