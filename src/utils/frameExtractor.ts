@@ -2,7 +2,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
-import type { FrameExtractionConfig, FrameExtractionResult } from './types.js';
+import type { FrameExtractionConfig, FrameExtractionResult } from '../types.js';
 
 /**
  * Extracts audio from a video file
@@ -150,6 +150,8 @@ export async function extractFrames(
           for (const framePath of framePaths) {
             await fs.unlink(framePath);
           }
+
+
           console.log('Temporary frame files cleaned up');
 
           const result: FrameExtractionResult = {
@@ -186,34 +188,5 @@ export async function extractFrames(
  * await cleanupFrames(result.outputDir);
  * ```
  */
-export async function cleanupFrames(outputDir: string): Promise<void> {
-  try {
-    await fs.rm(outputDir, { recursive: true, force: true });
-    console.log(`Cleaned up temporary directory: ${outputDir}`);
-  } catch (error) {
-    console.error(`Failed to cleanup: ${error}`);
-    throw error;
-  }
-}
 
-/**
- * Cleanup only the audio file
- * 
- * @param audioPath - Path to the audio file to clean up
- * 
- * @example
- * ```typescript
- * if (result.audioPath) {
- *   await cleanupAudio(result.audioPath);
- * }
- * ```
- */
-export async function cleanupAudio(audioPath: string): Promise<void> {
-  try {
-    await fs.unlink(audioPath);
-    console.log(`Cleaned up audio file: ${audioPath}`);
-  } catch (error) {
-    console.error(`Failed to cleanup audio: ${error}`);
-    throw error;
-  }
-}
+
