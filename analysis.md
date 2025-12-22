@@ -6,97 +6,95 @@ Here is a step-by-step analysis of the frames from the video:
    - The page includes fields for "Username" and "Password".
    - There are two login options: "Microsoft AD Ritense" and "Ritense".
    - A "Forgot Password?" link is visible below the password field.
-   - A "LOG IN" button is located at the bottom of the form.
+   - A "LOG IN" button is at the bottom of the form.
 
 2. **Cursor Movement**:
-   - The cursor hovers over the "Microsoft AD Ritense" login option.
-   - The cursor then moves to the "Ritense" login option.
+   - The cursor moves to the "Microsoft AD Ritense" login option.
+   - The cursor hovers over the "Microsoft AD Ritense" button.
 
-3. **Cursor Interaction**:
-   - The cursor clicks on the "Microsoft AD Ritense" login option.
-   - The screen transitions to a redirecting message.
+3. **Selection of Login Option**:
+   - The cursor clicks on the "Microsoft AD Ritense" button.
+   - The screen transitions to a new page, indicating a redirect.
 
-4. **Redirecting Message**:
-   - A message appears stating "Redirecting, please wait...".
-   - The Valtimo logo and the text "Valtimo (test)" are displayed above the message.
+4. **Redirection Message**:
+   - A message appears stating "Redirecting, please wait."
+   - The Valtimo logo and the text "Valtimo (test)" are displayed during the redirection process.
 
-5. **Final Frame**:
-   - The screen continues to show the redirecting message.
-   - The URL in the browser's address bar changes to reflect the redirection process.
+5. **Final Redirection**:
+   - The screen remains on the redirection message, indicating that the user is being redirected to the Microsoft AD Ritense login page.
 
-This sequence of frames illustrates the process of attempting to log in to the Valtimo test environment using the "Microsoft AD Ritense" option.
+This sequence of frames shows the process of a user attempting to log in to the Valtimo test environment using the Microsoft AD Ritense option.
 
 ,Batch 2:
 Here is a step-by-step analysis of the frames from the video:
 
 1. **Frame 1-4: Microsoft Account Selection**
    - The user is presented with a Microsoft login page.
-   - The page prompts the user to "Pick an account."
+   - The screen shows a prompt to "Pick an account."
    - Two accounts are listed:
-     - Randell Bakker with the email `randell.bakker@interflex.com`
-     - Bakker, Randell with the email `r.bakker@amsterdam.nl`
-   - Both accounts are marked as "Signed in."
-   - There is an option to "Use another account."
+     - "Randell Bakker" with an email address ending in "@interflex.com."
+     - "Bakker, Randell" with an email address ending in "@amsterdam.nl."
+   - The cursor hovers over the first account, "Randell Bakker."
 
 2. **Frame 5-6: Loading Screen**
-   - The screen transitions to a blank white page with a loading cursor.
-   - The URL in the address bar indicates a Microsoft login page with a long string of parameters.
+   - The screen transitions to a blank white page with a loading cursor in the center.
+   - The URL in the address bar indicates a Microsoft login page with a long string of characters.
    - The page title changes to "Working..."
 
-3. **Frame 7-8: Continuation of Loading Screen**
-   - The screen remains blank with a loading cursor.
-   - The URL and page title remain the same as in the previous frames.
+3. **Frame 7-8: Connectors Page**
+   - The user is redirected to a page titled "Connectors" within an application named "IKO Admin."
+   - The URL indicates a development environment for a product.
+   - The page lists several connectors:
+     - "Demo demo"
+     - "Zaken zaken"
+     - "Documenten documenten"
+     - "BRP brp"
+     - "Kelders (via Objecten API) kelders"
+   - The cursor is seen selecting the "Add connector" button.
 
-4. **Frame 9-10: IKO Admin Connectors Page**
-   - The user is redirected to the IKO Admin platform.
-   - The page title is "IKO Admin."
-   - The URL indicates a connectors page within the IKO platform.
-   - The user is shown a list of connectors with the following entries:
-     - Demo demo
-     - Zaken zaken
-     - Documenten documenten
-     - BRP brp
-     - Kelder (via Objecten API) kelders
-   - There is an "Add connector" button at the top right of the list.
+4. **Frame 9: Connectors Table View**
+   - The connectors are displayed in a tabular format with columns for "Name" and "Reference."
+   - The table includes:
+     - "BAG" with reference "bag"
+     - "Demo" with reference "demo"
+     - "Zaken" with reference "zaken"
+     - "Documenten" with reference "documenten"
+     - "BRP" with reference "brp"
+     - "Kelders (via Objecten API)" with reference "kelders"
+   - The cursor is seen interacting with the table, possibly selecting or editing an entry.
 
-5. **Frame 11-12: Detailed View of Connectors**
-   - The connectors list is displayed in a tabular format.
-   - The table has columns labeled "Name" and "Reference."
-   - The entries in the table are:
-     - BAG bag
-     - Demo demo
-     - Zaken zaken
-     - Documenten documenten
-     - BRP brp
-     - Kelder (via Objecten API) kelders
-   - Each row has an ellipsis icon on the right, likely for additional options or actions.
-   - The "Add connector" button is still present at the top right of the table.
+This sequence shows the user navigating through a Microsoft login process and accessing a connectors management page within an application.
 
 ,Batch 3:
 Here is a step-by-step analysis of the frames from the video:
 
 1. **Initial Frame (Connectors Page)**
    - The screen shows a web application interface titled "IKO Admin."
-   - The URL indicates a development environment: `https://iko.product-development.test.k8s.ritense.com/admin/connectors?continue`.
-   - The user is on the "Connectors" page, which lists several connectors with their names and references.
-   - The connectors listed are:
+   - The user is on the "Connectors" page.
+   - The URL in the browser is `https://iko.product-development.test.k8s.ritense.com/admin/connectors?continue`.
+   - The page lists several connectors with their names and references:
      - BAG (Reference: bag)
      - Demo (Reference: demo)
      - Zaken (Reference: zaken)
      - Documenten (Reference: documenten)
      - BRP (Reference: brp)
-     - Kelders (via Objecten API) (Reference: kelders)
+     - Kelder (Reference: kelders)
    - There is an "Add connector" button on the top right.
 
 2. **Navigation to Aggregated Data Profiles**
    - The user navigates to the "Aggregated Data Profiles" section.
    - The URL changes to `https://iko.product-development.test.k8s.ritense.com/admin/aggregated-data-profiles`.
-   - The screen shows a list of aggregated data profiles, but it appears empty initially.
+   - The screen shows a list of aggregated data profiles, but the list is empty.
 
-3. **Aggregated Data Profiles Page**
-   - The user is on the "Aggregated Data Profiles" page.
-   - There is an "Add new 'Aggregated Data Profile'" button on the top right.
-   - The list of aggregated data profiles is populated with several entries, including:
+3. **Return to Connectors Page**
+   - The user returns to the "Connectors" page.
+   - The URL changes back to `https://iko.product-development.test.k8s.ritense.com/admin/connectors?continue`.
+   - The connectors list remains the same as in the initial frame.
+
+4. **Navigation to Aggregated Data Profiles (Detailed View)**
+   - The user navigates back to the "Aggregated Data Profiles" section.
+   - The URL remains `https://iko.product-development.test.k8s.ritense.com/admin/aggregated-data-profiles`.
+   - The screen shows a list of aggregated data profiles with names:
      - brp
      - kelder
      - bag-pand
@@ -105,58 +103,47 @@ Here is a step-by-step analysis of the frames from the video:
      - demo
      - zaken
      - objectdocumenten
+   - There is an "Add new 'Aggregated Data Profile'" button on the top right.
 
-4. **Return to Connectors Page**
-   - The user navigates back to the "Connectors" page.
-   - The screen shows the same list of connectors as initially displayed.
-
-5. **Repeated Navigation**
-   - The user navigates back and forth between the "Connectors" and "Aggregated Data Profiles" pages multiple times.
-   - Each time the user returns to the "Connectors" page, the list of connectors remains the same.
-
-6. **Final Frame (Connectors Page)**
-   - The video ends with the user on the "Connectors" page, showing the same list of connectors as in the initial frame.
-
-This sequence of frames demonstrates the user navigating between different sections of the IKO Admin web application, specifically between the "Connectors" and "Aggregated Data Profiles" pages.
+This sequence of frames demonstrates the user navigating between the "Connectors" and "Aggregated Data Profiles" sections of the IKO Admin web application.
 
 ,Batch 4:
 Here is a step-by-step analysis of the frames from the video:
 
-1. **Initial Screen**:
-   - The user is on a web page titled "Aggregated Data Profiles."
-   - The page lists several data profiles: brp, kelder, bag-pand, kelder eigenaar, get-documenten-of-zaak, demo, zaken, and objectdocumenten.
-   - There is an "Add new 'Aggregated Data Profile'" button at the top right.
+1. **Initial Screen (Aggregated Data Profiles List)**
+   - The screen shows a list of aggregated data profiles.
+   - The profiles listed include: brp, kelder, bag-pand, kelder eigenaar, get-documenten-of-zaak, demo, zaken, and objectdocumenten.
+   - There is an "Add new 'Aggregated Data Profile'" button at the top right corner.
 
-2. **Selecting a Data Profile**:
-   - The user hovers over the "demo" data profile.
-   - A cursor highlights the "demo" profile, indicating the user's intention to select or edit this profile.
+2. **Selecting a Profile (Demo)**
+   - The cursor hovers over the "demo" profile.
+   - The "demo" profile is highlighted, indicating it is being selected.
 
-3. **Opening the Data Profile**:
-   - The user clicks on the "demo" profile.
-   - The screen transitions to the edit page for the "demo" profile.
+3. **Opening the Selected Profile (Demo)**
+   - The "demo" profile is opened, showing its detailed configuration page.
+   - The page is divided into three tabs: General, Relations, and Preview.
+   - The "General" tab is active by default.
 
-4. **Edit Profile Page**:
-   - The edit page for the "demo" profile is displayed.
-   - The page has three tabs: General, Relations, and Preview.
-   - The "General" tab is selected by default.
-   - The "Edit profile" section includes fields for Name, Connector Instance, Connector Endpoint, Role, Cache enabled, and Time to live.
-   - The "demo" profile name is pre-filled.
-   - The Connector Instance is set to "(Demo) Demo1."
-   - The Connector Endpoint is set to "mockdata."
-   - The Role field contains "ROLE_ADMIN, ROLE_USER."
-   - The "Cache enabled" toggle is set to "Off."
-   - The "Time to live" field is set to "600000" milliseconds.
-   - There is a "Save" button at the bottom right.
+4. **Editing the Profile (General Tab)**
+   - The "Edit profile" section is visible.
+   - The name of the profile is "demo".
+   - There are fields to select a connector instance and a connector endpoint.
+   - The selected connector instance is "(Demo) Demo1" and the connector endpoint is "mockdata".
+   - The role assigned is "ROLE_ADMIN, ROLE_USER".
+   - There is an option to enable caching with a toggle switch currently set to "Off".
+   - The "Time to live" is set to 600000 milliseconds.
+   - There is a "Clear cache" button and a "Save" button.
 
-5. **Interacting with the Edit Page**:
-   - The user hovers over the "Cache enabled" toggle.
-   - The cursor highlights the toggle, indicating the user's intention to interact with it.
+5. **Navigating Through the Profile Configuration**
+   - The cursor moves around the configuration page, highlighting different sections.
+   - The cursor hovers over the "Time to live" field and the "Clear cache" button.
+   - The "Save" button is also highlighted, indicating the user might be about to save the changes.
 
-6. **Saving the Profile**:
-   - The user clicks the "Save" button.
-   - The screen remains on the edit page, indicating that the changes have been saved or are in the process of being saved.
+6. **Final Frame (Profile Configuration)**
+   - The cursor is positioned over the "Save" button, indicating the user is ready to save the configuration.
+   - The overall configuration remains the same as in the previous frames.
 
-This sequence of frames shows the user navigating through the "Aggregated Data Profiles" page, selecting a profile, editing its details, and saving the changes.
+This sequence of frames illustrates the process of navigating to and configuring an aggregated data profile within an administrative interface.
 
 ,Batch 5:
 Here is a step-by-step analysis of the frames from the video:
@@ -174,114 +161,112 @@ Here is a step-by-step analysis of the frames from the video:
    - The role assigned is "ROLE_ADMIN, ROLE_USER."
 
 3. **Cache Settings**:
-   - The "Cache enabled" toggle is initially in the "Off" position.
-   - The "Time to live" is set to 600000 milliseconds (10 minutes).
+   - The "Cache enabled" toggle is initially set to "Off."
+   - The "Time to live" is set to 600,000 milliseconds.
    - There is a "Clear cache" button next to the cache settings.
 
 4. **Transform Section**:
-   - There is a transform section with a default expression: `.content[0]`.
+   - The transform section contains a single line: `.content[0]`.
 
 5. **User Interaction**:
    - The user clicks on the "Cache enabled" toggle to turn it "On."
-   - The user then clicks on the "Time to live" field to adjust the value.
-   - The user interacts with the "Save" button, which is located at the bottom right of the form.
+   - The user then clicks on the "Time to live" input field to adjust the value.
+   - The user increases the "Time to live" value using the "+" button.
+   - The user clicks on the "Save" button to save the changes.
 
-6. **Final Actions**:
-   - The user clicks on the "Save" button to save the changes made to the profile settings.
+6. **Final State**:
+   - The "Cache enabled" toggle remains "On."
+   - The "Time to live" value is adjusted and highlighted.
+   - The user clicks the "Save" button to finalize the changes.
 
-This sequence of actions shows the user configuring a data profile, enabling caching, setting the cache duration, and saving the changes.
+This sequence of actions demonstrates the user configuring cache settings for a data profile in a web-based administrative interface.
 
 ,Batch 6:
 Here is a step-by-step analysis of the frames from the video:
 
 1. **Initial Setup**:
-   - The user is on a web page titled "IKO Admin."
+   - The user is on a web page titled "IKO Admin" and is editing an aggregated data profile named "demo".
    - The URL indicates a development environment: `https://iko.product-development.test.k8s.ritense.com/admin/aggregated-data-profiles/3de25015-9ab7-415a-b450-f6942cbb2ca3`.
-   - The user is editing a profile named "demo."
+   - The user is in the "General" tab of the profile settings.
 
 2. **Profile Information**:
-   - The profile is under the "General" tab.
-   - The "Edit profile" section includes fields for "Name," "Connector Instance," "Connector Endpoint," "Role," "Cache enabled," and "Time to live."
+   - The profile name is "demo".
+   - The user has selected a connector instance labeled "(Demo) Demo1".
+   - The connector endpoint selected is "mockdata".
+   - The role assigned is "ROLE_ADMIN, ROLE_USER".
 
-3. **Connector Instance and Endpoint**:
-   - The "Connector Instance" is set to "(Demo) Demo1."
-   - The "Connector Endpoint" is set to "mockdata."
+3. **Cache Settings**:
+   - The cache is enabled (indicated by the green toggle switch).
+   - The "Time to live" (TTL) for the cache is set to 600,000 milliseconds (600 seconds or 10 minutes).
 
-4. **Role Assignment**:
-   - The "Role" field is filled with "ROLE_ADMIN, ROLE_USER."
-
-5. **Cache Settings**:
-   - The "Cache enabled" toggle is set to "On."
-   - The "Time to live" value is initially set to 600000 milliseconds.
-
-6. **Adjusting Time to Live**:
+4. **Adjusting Cache TTL**:
    - The user interacts with the "Time to live" field.
-   - The value is decreased incrementally from 600000 to 598000 milliseconds.
-   - The user continues to decrease the value further.
+   - The user decreases the TTL value from 600,000 milliseconds to 598,000 milliseconds using the minus button.
+   - The user then increases the TTL value back to 600,000 milliseconds using the plus button.
 
-7. **Final Adjustment**:
-   - The "Time to live" value is adjusted back to 601000 milliseconds.
-   - The user interacts with the "Save" button, indicating the intention to save the changes.
-
-8. **User Interface Elements**:
-   - The interface includes navigation tabs like "General," "Relations," and "Preview."
+5. **Transform Section**:
    - There is a "Transform" section on the right side of the screen with a default expression `.content[0]`.
-   - Additional options like "Clear cache" and a link to a JQ expression tutorial are visible.
 
-This sequence of frames shows the user configuring and adjusting settings for a data profile in an administrative interface.
+6. **Save Button**:
+   - The "Save" button is visible at the bottom right of the screen, indicating that the user can save the current settings.
+
+7. **User Interface Elements**:
+   - The interface includes navigation tabs (General, Relations, Preview).
+   - There are additional UI elements such as a sidebar with icons for different functionalities and a top navigation bar with various options.
+
+8. **User Interaction**:
+   - The user continues to interact with the "Time to live" field, adjusting the value up and down.
+   - The final frame shows the TTL value being adjusted back to 600,000 milliseconds.
+
+This sequence of frames illustrates the user configuring cache settings for an aggregated data profile in a web-based administrative interface.
 
 ,Batch 7:
 Here is a step-by-step analysis of the frames from the video:
 
 1. **Frame 1:**
    - The user is on a web page titled "IKO Admin."
-   - The URL indicates a development environment: `https://iko.product-development.test.k8s.ritense.com/admin/aggregated-data-profiles/3de25015-9ab7-415a-b450-f6942cbb2ca3`.
-   - The page is in the "Aggregated Data Profiles" section, specifically editing a profile named "demo."
-   - The "General" tab is selected.
-   - The "Edit profile" section shows fields for:
-     - Name: "demo"
-     - Connector instance: "(Demo) Demo1"
-     - Connector endpoint: "mockdata"
-     - Role: "ROLE_ADMIN, ROLE_USER"
-     - Cache enabled: Toggle switch is on.
-     - Time to live: Set to 600000 milliseconds.
-     - Transform: Contains `.content[0]`.
-     - There is a "Save" button at the bottom right.
+   - The URL indicates a specific path related to "aggregated-data-profiles."
+   - The user is on the "General" tab of a profile named "demo."
+   - The "Edit profile" section is visible with fields for "Name," "Connector instance," "Connector endpoint," "Role," "Cache enabled," and "Time to live."
+   - The "Cache enabled" toggle is switched on.
+   - The "Time to live" is set to 600000 milliseconds.
+   - There is a "Save" button at the bottom right.
 
 2. **Frame 2:**
-   - The user is interacting with the "Cache enabled" toggle switch, which is being turned on.
+   - The user is still on the "General" tab.
+   - The cursor is hovering over the "Cache enabled" toggle, indicating an interaction with this setting.
 
 3. **Frame 3:**
-   - The "Cache enabled" toggle switch is now in the "on" position.
+   - The user is still on the "General" tab.
+   - The cursor is now hovering over the "Time to live" field, indicating an interaction with this setting.
 
 4. **Frame 4:**
-   - The user is adjusting the "Time to live" value, decreasing it from 600000 milliseconds.
+   - The user is still on the "General" tab.
+   - The cursor is hovering over the "Save" button, indicating an intention to save the changes.
 
 5. **Frame 5:**
-   - The user has switched to the "Relations" tab.
+   - The user has navigated to the "Relations" tab.
    - The "Relations" section shows a "Profile root" entry.
-   - There is an "Add child" button available.
+   - There is an "Add child" button visible, indicating the option to add a child relation.
 
 6. **Frame 6:**
-   - The user is hovering over the "Profile root" entry in the "Relations" section.
+   - The user is still on the "Relations" tab.
+   - The cursor is hovering over the "Profile root" entry, indicating an interaction with this entry.
 
 7. **Frame 7:**
-   - The user has clicked the "Add child" button, opening a form to add a new relation.
-   - The form includes fields for:
-     - From: "Profile root"
-     - Connector instance: "(Demo) Demo1"
-     - Connector endpoint: "mockdata"
-     - Endpoint parameter Mapping: Empty JSON object `{}`.
-     - Property Name: Example given as "e.g. relation".
-     - Transform: Contains `.content[0]`.
+   - The user is still on the "Relations" tab.
+   - A new relation form is open on the right side of the screen.
+   - The form includes fields for "From," "Connector instance," "Connector endpoint," "Endpoint parameter Mapping," "Property Name," and "Transform."
+   - The "From" field is set to "Profile root."
+   - The "Connector instance" is set to "(Demo) Demo1."
+   - The "Connector endpoint" is set to "mockdata."
+   - The cursor is hovering over the "Endpoint parameter Mapping" field, indicating an interaction with this field.
 
 8. **Frame 8:**
-   - The user is interacting with the "Endpoint parameter Mapping" field, possibly adding or editing content.
+   - The user is still on the "Relations" tab.
+   - The cursor is now hovering over the "Add child" button, indicating an intention to add a child relation.
 
-9. **Frame 9:**
-   - The form for adding a new relation is still open, with the user possibly finalizing the details before saving.
-
-This sequence of frames shows the user navigating through different sections of a data profile configuration, adjusting settings, and attempting to add a new relation to the profile.
+This sequence of frames shows the user navigating through different settings and interactions within the "IKO Admin" interface, specifically focusing on editing a profile and managing relations.
 
 ,Batch 8:
 Here is a step-by-step analysis of the frames from the video:
@@ -289,32 +274,35 @@ Here is a step-by-step analysis of the frames from the video:
 1. **Initial Setup**:
    - The user is on a web page titled "IKO Admin".
    - The URL indicates a development environment: `https://iko.product-development.test.k8s.ritense.com/admin/aggregated-data-profiles/3de25015-9ab7-415a-b450-f6942cbb2ca3`.
+   - The user is logged in as "Randell Bakker".
 
 2. **Interface Overview**:
    - The interface is divided into two main sections: a left panel and a right panel.
    - The left panel contains a navigation menu with options like "Profile root" and an "Add child" button.
+   - The right panel contains form fields for configuring a connector.
 
-3. **Right Panel Details**:
-   - The right panel is a form for configuring a data profile.
-   - The form includes several fields:
-     - **From**: Set to "Profile root".
-     - **Select a connector instance**: Set to "(Demo) Demo1".
-     - **Select a connector endpoint**: Set to "mockdata".
-     - **Endpoint parameter Mapping**: Contains an empty JSON object `{}`.
-     - **Property Name**: An example is given as "e.g. relation".
-     - **Transform**: Contains a placeholder "1".
-     - A note at the bottom states: "A valid JQ expression learn at https://jqlang.org/tutorial/".
+3. **Form Fields**:
+   - The form fields include:
+     - "From" dropdown, currently set to "Profile root".
+     - "Select a connector instance" dropdown, currently set to "(Demo) Demo1".
+     - "Select a connector endpoint" dropdown, currently set to "mockdata".
+     - "Endpoint parameter Mapping" field, which is empty.
+     - "Property Name" field, with an example value "e.g. relation".
+     - "Transform" field, which is empty.
+     - A note indicating that a valid JQ expression can be learned from `https://jqlang.org/tutorial/`.
 
 4. **User Interaction**:
-   - The cursor is seen hovering over the "Transform" field, indicating the user might be about to edit or is currently editing this field.
-   - The "Add child" button is visible at the bottom of the left panel, suggesting the user can add more fields or configurations.
+   - In the first frame, the cursor is hovering over the "Transform" field.
+   - In the second frame, the cursor is no longer hovering over any field.
 
-5. **Save Option**:
-   - There is a "Save" button at the bottom right of the right panel, allowing the user to save the current configuration.
+5. **Action Buttons**:
+   - There are two action buttons at the bottom of the form:
+     - "Add child" button on the left.
+     - "Save" button on the right.
 
-6. **Browser Details**:
-   - The browser tab shows multiple open tabs, including "Declaration form", "Ritense", "Projects", and "AI Engineer Road...".
-   - The user is identified as "Randell Bakker" in the top right corner of the interface.
+6. **Browser Tabs and Bookmarks**:
+   - The browser tab includes several other tabs such as "Declaration form v...", "Ritense", "Projects", and "AI Engineer Road...".
+   - The bookmarks bar includes a bookmark titled "All Bookmarks".
 
-This analysis provides a clear breakdown of the interface and the actions being performed in the video frames.
+This analysis provides a detailed breakdown of the interface and user interactions visible in the frames.
 

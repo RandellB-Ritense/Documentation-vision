@@ -4,7 +4,11 @@ import 'dotenv/config';
 import { promises as fspromise} from 'fs';
 import fs from "fs";
 import {chunkArray} from "./chunker.js";
-import {ANALYSIS_PROMPT, DOCUMENTATION_WRITER_PROMPT} from './prompts.js';
+import {
+    ANALYSIS_PROMPT,
+    DOCUMENTATION_WRITER_PROMPT,
+    FINAL_WRITER_PROMPT,
+} from './prompts.js';
 
 const apiKey = process.env.MISTRAL_API_KEY;
 
@@ -50,6 +54,10 @@ async function main() {
 
         console.log(`\nProcessing batch ${batchNumber}/${frameBatches.length} `);
 
+        /*
+        * First stage LLM (Analysis)
+        * */
+
         // Send request to Mistral API
         const imageProcessResponse = await client.chat.complete({
             model: 'mistral-small-latest',
@@ -87,7 +95,11 @@ async function main() {
     await fspromise.writeFile('./analysis.md', String(batchResponses), 'utf8');
 
     console.log(`\nAll batches processed!`);
-    console.log('\nDocumenttion generation started...');
+
+
+    /*
+    * Second stage LLM (Transcription)
+    * */
 
     let transcriptionText = '';
     
@@ -104,10 +116,14 @@ async function main() {
         transcriptionText = transcriptionResponse.text || '';
     }
 
+    /*
+    * Third stage LLM (Merging)
+    * */
+
     // Join responses into single string so it can be sent to the LLM
     const flattenResponses = batchResponses.join('\n\n');
 
-    const chatResponse = await client.chat.complete({
+    const chatMergResponse = await client.chat.complete({
         model: "mistral-small-latest",
         temperature: 0.7,
         messages: [
@@ -118,12 +134,29 @@ async function main() {
         ]
     });
 
+    if (!chatMergResponse || !chatMergResponse.choices[0]?.message?.content) throw new Error(
+        `No response from Mistral API`
+    )
+
+    /*
+    * Forth stage LLM (final formatting)
+    * */
+
+    const chatResponse = await client.chat.complete({
+        model: "mistral-small-latest",
+        temperature: 0.7,
+        messages: [
+            {
+                role: 'system', content: FINAL_WRITER_PROMPT
+            },
+            {role: 'user', content: `Rewrite this documentation: ${flattenResponses} and keep ony the parts that are discused in this transcript: ${transcriptionText} to write a final version`}
+        ]
+    });
+
     if (!chatResponse || !chatResponse.choices[0]?.message?.content) throw new Error(
         `No response from Mistral API`
     )
 
-    console.log('\nDocumentation generation complete!');
-    console.log('\nwriting to file...');
 
     // Write response to file
     const mdContent = chatResponse.choices[0].message.content;

@@ -44,3 +44,10 @@ export const ANALYSIS_PROMPT =
       Analyze frames from this video. Describe what's happening in these frames step by step.
       Respond in a list of rather then a story.
    `
+
+export const FINAL_WRITER_PROMPT =
+    `
+      You are a final version copy writer.
+      You take two data sources and write a final version of a document.
+      You keep the tone of voice and style of the original document.
+   `
