@@ -1,9 +1,10 @@
 import {extractFrames} from './index.js';
 import {Mistral} from '@mistralai/mistralai';
 import 'dotenv/config';
-import { promises as fs } from 'fs';
+import { promises as fspromise} from 'fs';
+import fs from "fs";
 import {chunkArray} from "./chunker.js";
-import { DOCUMENTATION_WRITER_PROMPT } from './prompts.js';
+import {ANALYSIS_PROMPT, DOCUMENTATION_WRITER_PROMPT} from './prompts.js';
 
 const apiKey = process.env.MISTRAL_API_KEY;
 
@@ -59,7 +60,7 @@ async function main() {
                     content: [
                         {
                             type: 'text' as const,
-                            text: `Analyze frames from this video. Describe what's happening in these frames taken in account that this analysis if for generating documentation.`
+                            text: ANALYSIS_PROMPT
                         },
                         ...batch.map(base64Image => ({
                             type: 'image_url' as const,
@@ -77,28 +78,43 @@ async function main() {
 
         // Collect responses
         const content = imageProcessResponse.choices[0].message.content;
-        batchResponses.push(`Batch ${batchNumber}:\n${content}`);
-
-        // Write analysis response to file
-        await fs.writeFile('./analysis.md', String(batchResponses), 'utf8');
+        batchResponses.push(`Batch ${batchNumber}:\n${content}\n\n`);
 
         console.log(`✓ Batch ${batchNumber} complete`);
     }
 
+    // Write analysis response to file
+    await fspromise.writeFile('./analysis.md', String(batchResponses), 'utf8');
+
     console.log(`\nAll batches processed!`);
     console.log('\nDocumenttion generation started...');
+
+    let transcriptionText = '';
+    
+    if (result.audioPath) {
+        const audio_file = fs.readFileSync(result.audioPath);
+        const transcriptionResponse = await client.audio.transcriptions.complete({
+            model: "voxtral-mini-latest",
+            file: {
+                fileName: "audio.mp3",
+                content: audio_file,
+            },
+            language: "en"
+        });
+        transcriptionText = transcriptionResponse.text || '';
+    }
 
     // Join responses into single string so it can be sent to the LLM
     const flattenResponses = batchResponses.join('\n\n');
 
     const chatResponse = await client.chat.complete({
-        model: "mistral-large-latest",
+        model: "mistral-small-latest",
         temperature: 0.7,
         messages: [
             {
                 role: 'system', content: DOCUMENTATION_WRITER_PROMPT
             },
-            {role: 'user', content: `Rewrite this UI analysis into a documentation: ${flattenResponses}`}
+            {role: 'user', content: `Rewrite this UI analysis into a documentation: ${flattenResponses} taken this transcript as the main story: ${transcriptionText}`}
         ]
     });
 
@@ -111,7 +127,7 @@ async function main() {
 
     // Write response to file
     const mdContent = chatResponse.choices[0].message.content;
-    await fs.writeFile('./output.md', String(mdContent), 'utf8');
+    await fspromise.writeFile('./output.md', String(mdContent), 'utf8');
 
     console.log('Done!');
 
