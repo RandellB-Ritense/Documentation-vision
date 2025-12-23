@@ -178,15 +178,3 @@ export async function extractFrames(
   });
 }
 
-/**
- * Cleanup the temporary directory (including audio if present)
- * 
- * @param outputDir - Path to the directory to clean up
- * 
- * @example
- * ```typescript
- * await cleanupFrames(result.outputDir);
- * ```
- */
-
-

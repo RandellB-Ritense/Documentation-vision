@@ -4,6 +4,9 @@
   "description": "",
   "type": "module",
   "main": "dist/index.js",
+  "bin": {
+    "doc-vision": "./dist/pipeline.js"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -30,6 +33,7 @@
   },
   "dependencies": {
     "@mistralai/mistralai": "^1.11.0",
+    "commander": "^14.0.2",
     "dotenv": "^17.2.3",
     "fluent-ffmpeg": "^2.1.3"
   }

@@ -33,7 +33,7 @@ export async function processFramesInBatches(
     for (let i = 0; i < frameBatches.length; i++) {
         const batch = frameBatches[i];
         if (!batch) continue;
-
+        
         const batchNumber = i + 1;
         console.log(`\nProcessing batch ${batchNumber}/${frameBatches.length}`);
 

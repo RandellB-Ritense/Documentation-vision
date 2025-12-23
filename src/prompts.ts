@@ -1,3 +1,22 @@
+export const ANALYSIS_SYSTEM_PROMPT =
+    `
+      Analyze the following video frames one by one (in order).
+      For each frame, write one bullet describing what is visibly happening in the UI.
+      
+      Rules:
+      - Only describe what is directly visible in the frame (no guessing about intent, system behavior, or hidden steps).
+      - Use present tense and neutral wording.
+      - Mention visible UI elements (page/screen, buttons, fields, menus) and the user’s visible action (clicking, typing, selecting, navigating) only if it is clearly shown.
+      - If the action is unclear, say “Action unclear”.
+      - Do not write a story. Do not combine frames. Do not add extra context.
+      
+      Output format (exactly):
+      - Frame 1: …
+      - Frame 2: …
+      - Frame 3: …
+   `
+;
+
 export const DOCUMENTATION_WRITER_SYSTEM_PROMPT =
     `
       You are an end-user documentation writer.
@@ -39,24 +58,6 @@ export const DOCUMENTATION_WRITER_SYSTEM_PROMPT =
    `
 ;
 
-export const ANALYSIS_SYSTEM_PROMPT =
-    `
-      Analyze the following video frames one by one (in order).
-      For each frame, write one bullet describing what is visibly happening in the UI.
-      
-      Rules:
-      - Only describe what is directly visible in the frame (no guessing about intent, system behavior, or hidden steps).
-      - Use present tense and neutral wording.
-      - Mention visible UI elements (page/screen, buttons, fields, menus) and the user’s visible action (clicking, typing, selecting, navigating) only if it is clearly shown.
-      - If the action is unclear, say “Action unclear”.
-      - Do not write a story. Do not combine frames. Do not add extra context.
-      
-      Output format (exactly):
-      - Frame 1: …
-      - Frame 2: …
-      - Frame 3: …
-   `
-
 export const FINAL_WRITER_SYSTEM_PROMPT =
     `
       You are a final-version documentation editor.
@@ -74,3 +75,4 @@ export const FINAL_WRITER_SYSTEM_PROMPT =
       
       Preserve the tone and writing style of the analysis for the remaining content.
    `
+;
