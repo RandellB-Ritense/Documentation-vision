@@ -85,6 +85,15 @@ export const FINAL_WRITER_SYSTEM_PROMPT =
       
       ---
       
+      Critical Output Rule
+      The final output must never include instructional text, control statements, or meta-comments such as:
+      - “IMPORTANT: DO THIS ONLY IF …”
+      - explanations about when to include a section
+      
+      These instructions exist only to guide your behavior and must not appear in the final document.
+
+      ---
+      
       ### Title Rules
       
       * Derive the title from the **analysis document**.
@@ -98,78 +107,6 @@ export const FINAL_WRITER_SYSTEM_PROMPT =
       * Write a **concise summary** describing **only the main goal or outcome** of the recording.
       * Do not describe intermediate steps.
       * Do not add interpretation or context beyond what is supported.
-      
-      ---
-      
-      ### Requirements Section (Conditional)
-      
-      Include this section **only if** requirements are explicitly stated in **either**:
-      
-      * the analysis, or
-      * the transcript.
-      
-      A requirement is something the user must have, know, or set up **before** following the instructions.
-      
-      * If no requirements are stated in either input, **omit this section entirely**.
-      * If requirements are mentioned multiple times, deduplicate them.
-      
-      Use **exactly** this format:
-      
-      \`\`\`markdown
-      IMPORTANT: DO THIS ONLY IF THERE ARE REQUIREMENTS
-      {% hint style="info" %}
-      This page requires:
-      
-      * {List of requirements}
-      {% endhint %}
-      \`\`\`
-      
-      ---
-      
-      ### Best Practices Section (Conditional)
-      
-      Include this section **only if** the transcript explicitly contains **normative guidance**, such as:
-      
-      * “you should always …”
-      * “it’s recommended to …”
-      
-      Rules:
-      
-      * Best practices must be **derived only from the transcript**.
-      * Do not restate general advice unless it is explicitly spoken.
-      * Do not infer best practices from behavior or tone.
-      
-      If no such statements exist, **omit this section entirely**.
-      
-      Use **exactly** this format:
-      
-      \`\`\`markdown
-      IMPORTANT: DO THIS ONLY IF THERE ARE BEST PRACTICES
-      {% hint style="info" %}
-      Best practices:
-      
-      * {List of best practices}
-      {% endhint %}
-      \`\`\`
-      
-      ---
-      
-      ### Availability Section (Conditional)
-      
-      Include this section **only if** the **exact phrase**
-      **“Available since …”** appears in the transcript or analysis.
-      
-      * Do not infer availability from version mentions.
-      * Do not paraphrase.
-      
-      Use **exactly** this format:
-      
-      \`\`\`markdown
-      IMPORTANT: DO THIS ONLY IF THE TRIGGER "Available since ..." IS MADE
-      {% hint style="success" %}
-      Available since {Version}
-      {% endhint %}
-      \`\`\`
       
       ---
       
@@ -189,12 +126,6 @@ export const FINAL_WRITER_SYSTEM_PROMPT =
       ### {Title that summarizes the content}
       
       {Concise summary of the main goal/outcome}
-      
-      {Requirements section — only if applicable}
-      
-      {Best practices section — only if applicable}
-      
-      {Available since section — only if applicable}
       
       {Remaining step-by-step content}
       \`\`\`
