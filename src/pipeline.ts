@@ -7,10 +7,12 @@ import { transcribeAudio } from './services/audioProcessor.js';
 import { mergeAnalysisAndTranscription, generateFinalDocumentation } from './services/documentationGenerator.js';
 import { Command } from 'commander';
 import { join } from 'path';
+import { setDebugMode, debug, isDebugEnabled } from './utils/debug.js';
 
 async function runPipeline(videoPath: string, outputDir: string, namePrefix: string) {
     // Stage 1: Extract frames and audio from video
     console.log('Starting frame extraction...');
+    debug('Running pipeline with options:', { videoPath, outputDir, namePrefix });
 
     const result = await extractFrames(videoPath, {
         fps: 1,
@@ -37,8 +39,12 @@ async function runPipeline(videoPath: string, outputDir: string, namePrefix: str
         batchSize: 8
     });
 
-    const analysisPath = join(outputDir, `${namePrefix}_analysis.md`);
-    await fspromise.writeFile(analysisPath, batchResponses.join(''), 'utf8');
+    // Only write analysis file if debug mode is enabled
+    if (isDebugEnabled()) {
+        const analysisPath = join(outputDir, `${namePrefix}_analysis.md`);
+        await fspromise.writeFile(analysisPath, batchResponses.join(''), 'utf8');
+        debug('Analysis file written to:', analysisPath);
+    }
 
     // Stage 3: Transcribe audio
     const transcriptionText = await transcribeAudio(result.audioPath, {
@@ -73,7 +79,10 @@ async function runPipeline(videoPath: string, outputDir: string, namePrefix: str
     await fspromise.writeFile(outputPath, finalDocumentation, 'utf8');
 
     console.log(`\n✓ Pipeline complete!`);
-    console.log(`  Analysis written to: ${analysisPath}`);
+    if (isDebugEnabled()) {
+        const analysisPath = join(outputDir, `${namePrefix}_analysis.md`);
+        console.log(`  Analysis written to: ${analysisPath}`);
+    }
     console.log(`  Documentation written to: ${outputPath}`);
 }
 
@@ -87,8 +96,14 @@ async function main() {
         .requiredOption('-i, --input <video>', 'Input video file path')
         .requiredOption('-o, --output-dir <directory>', 'Output directory for generated files')
         .requiredOption('-n, --name <prefix>', 'Name prefix for output files')
+        .option('-d, --debug', 'Enable debug logging')
         .action(async (options) => {
             try {
+                // Enable debug mode if flag is set
+                if (options.debug) {
+                    setDebugMode(true);
+                    debug('Debug mode enabled');
+                }
                 await runPipeline(options.input, options.outputDir, options.name);
             } catch (error) {
                 console.error('Error running pipeline:', error);

@@ -1,6 +1,7 @@
 import { mistralClient } from '../utils/mistralClient.js';
 import { chunkArray } from '../utils/chunker.js';
 import { ANALYSIS_SYSTEM_PROMPT } from '../prompts.js';
+import { debug, debugTime, debugTimeEnd } from '../utils/debug.js';
 
 export interface FrameProcessingOptions {
     batchSize?: number;
@@ -27,6 +28,10 @@ export async function processFramesInBatches(
     const frameBatches = chunkArray(framesBase64, BATCH_SIZE);
 
     console.log(`\nProcessing ${frameBatches.length} batches of up to ${BATCH_SIZE} frames each...`);
+    debug('Frame processing options:', options);
+    debug('Total frames:', framesBase64.length);
+    debug('Batch size:', BATCH_SIZE);
+    debug('Number of batches:', frameBatches.length);
 
     const batchResponses: string[] = [];
 
@@ -36,6 +41,8 @@ export async function processFramesInBatches(
         
         const batchNumber = i + 1;
         console.log(`\nProcessing batch ${batchNumber}/${frameBatches.length}`);
+        debug(`Batch ${batchNumber} contains ${batch.length} frames`);
+        debugTime(`Batch ${batchNumber} processing`);
 
         // Send request to Mistral API
         const imageProcessResponse = await mistralClient.chat.complete({
@@ -60,13 +67,16 @@ export async function processFramesInBatches(
 
         if (!imageProcessResponse || !imageProcessResponse.choices[0]?.message?.content) {
             console.warn(`Warning: No response for batch ${batchNumber}`);
+            debugTimeEnd(`Batch ${batchNumber} processing`);
             continue;
         }
 
         // Collect responses
         const content = imageProcessResponse.choices[0].message.content;
         batchResponses.push(`Batch ${batchNumber}:\n${content}\n\n`);
+        debug(`Batch ${batchNumber} response length:`, content.length, 'characters');
 
+        debugTimeEnd(`Batch ${batchNumber} processing`);
         console.log(`✓ Batch ${batchNumber} complete`);
     }
 
