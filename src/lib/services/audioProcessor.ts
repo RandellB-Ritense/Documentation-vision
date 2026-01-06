@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { mistralClient } from '../utils/mistralClient.js';
+import { mistralClient } from '../utils/mistralClient';
 
 export interface AudioTranscriptionOptions {
     model?: string;

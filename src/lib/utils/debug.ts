@@ -3,9 +3,14 @@
  */
 
 let debugEnabled = false;
+let logCallback: ((...args: any[]) => void) | null = null;
 
 export function setDebugMode(enabled: boolean): void {
     debugEnabled = enabled;
+}
+
+export function setLogCallback(callback: ((...args: any[]) => void) | null): void {
+    logCallback = callback;
 }
 
 export function isDebugEnabled(): boolean {
@@ -15,18 +20,27 @@ export function isDebugEnabled(): boolean {
 export function debug(...args: any[]): void {
     if (debugEnabled) {
         console.log('[DEBUG]', ...args);
+        if (logCallback) {
+            logCallback('[DEBUG]', ...args);
+        }
     }
 }
 
 export function debugError(...args: any[]): void {
     if (debugEnabled) {
         console.error('[DEBUG ERROR]', ...args);
+        if (logCallback) {
+            logCallback('[DEBUG ERROR]', ...args);
+        }
     }
 }
 
 export function debugWarn(...args: any[]): void {
     if (debugEnabled) {
         console.warn('[DEBUG WARN]', ...args);
+        if (logCallback) {
+            logCallback('[DEBUG WARN]', ...args);
+        }
     }
 }
 

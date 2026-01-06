@@ -1,5 +1,5 @@
-import { mistralClient } from '../utils/mistralClient.js';
-import { FINAL_WRITER_SYSTEM_PROMPT, AGGREGATOR_SYSTEM_PROMPT } from '../prompts.js';
+import { mistralClient } from '../utils/mistralClient';
+import { FINAL_WRITER_SYSTEM_PROMPT, AGGREGATOR_SYSTEM_PROMPT } from '../prompts';
 
 export interface DocumentationGenerationOptions {
     model?: string;

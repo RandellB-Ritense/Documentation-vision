@@ -1,7 +1,7 @@
-import { mistralClient } from '../utils/mistralClient.js';
-import { chunkArray } from '../utils/chunker.js';
-import { ANALYSIS_SYSTEM_PROMPT } from '../prompts.js';
-import { debug, debugTime, debugTimeEnd } from '../utils/debug.js';
+import { mistralClient } from '../utils/mistralClient';
+import { chunkArray } from '../utils/chunker';
+import { ANALYSIS_SYSTEM_PROMPT } from '../prompts';
+import { debug, debugTime, debugTimeEnd } from '../utils/debug';
 
 export interface FrameProcessingOptions {
     batchSize?: number;

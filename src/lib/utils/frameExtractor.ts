@@ -2,7 +2,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import {promises as fs} from 'fs';
 import path from 'path';
 import os from 'os';
-import type {FrameExtractionConfig, FrameExtractionResult} from '../types.js';
+import type {FrameExtractionConfig, FrameExtractionResult} from '../types';
 
 /**
  * Extracts audio from a video file
