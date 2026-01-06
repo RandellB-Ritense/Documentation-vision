@@ -1,5 +1,5 @@
 import { mistralClient } from '../utils/mistralClient.js';
-import { FINAL_WRITER_SYSTEM_PROMPT } from '../prompts.js';
+import { FINAL_WRITER_SYSTEM_PROMPT, AGGREGATOR_SYSTEM_PROMPT } from '../prompts.js';
 
 export interface DocumentationGenerationOptions {
     model?: string;
@@ -18,7 +18,7 @@ export async function generateFinalDocumentation(
     transcriptionText: string,
     options: DocumentationGenerationOptions = {}
 ): Promise<string> {
-    console.log('\nGenerating final documentation...');
+    console.log('Generating documentation version...');
 
     const chatResponse = await mistralClient.chat.complete({
         model: options.model || "mistral-small-latest",
@@ -53,10 +53,49 @@ export async function generateFinalDocumentation(
     });
 
     if (!chatResponse || !chatResponse.choices[0]?.message?.content) {
-        throw new Error('No response from Mistral API during final generation stage');
+        throw new Error('No response from Mistral API during documentation generation stage');
     }
 
-    console.log('✓ Final documentation complete');
+    const content = chatResponse.choices[0].message.content;
+    return typeof content === 'string' ? content : JSON.stringify(content);
+}
+
+/**
+ * Aggregate multiple documentation versions into a single final document
+ * @param documentationVersions - Array of documentation strings
+ * @param options - Generation options
+ * @returns Merged final documentation
+ */
+export async function aggregateDocumentation(
+    documentationVersions: string[],
+    options: DocumentationGenerationOptions = {}
+): Promise<string> {
+    console.log('\nAggregating documentation versions...');
+
+    const versionsText = documentationVersions
+        .map((doc, index) => `--- DOCUMENT VERSION ${index + 1} ---\n${doc}`)
+        .join('\n\n');
+
+    const chatResponse = await mistralClient.chat.complete({
+        model: options.model || "mistral-small-latest",
+        temperature: options.temperature || 0.2,
+        messages: [
+            {
+                role: 'system',
+                content: AGGREGATOR_SYSTEM_PROMPT
+            },
+            {
+                role: 'user',
+                content: `Please merge the following three documentation versions into a single final document:\n\n${versionsText}`
+            }
+        ]
+    });
+
+    if (!chatResponse || !chatResponse.choices[0]?.message?.content) {
+        throw new Error('No response from Mistral API during aggregation stage');
+    }
+
+    console.log('✓ Final aggregated documentation complete');
 
     const content = chatResponse.choices[0].message.content;
     return typeof content === 'string' ? content : JSON.stringify(content);

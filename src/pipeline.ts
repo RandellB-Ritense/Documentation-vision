@@ -4,7 +4,7 @@ import {cleanupAudio, extractFrames} from './index.js';
 import {promises as fspromise} from 'fs';
 import {processFramesInBatches} from './services/frameProcessor.js';
 import {transcribeAudio} from './services/audioProcessor.js';
-import {generateFinalDocumentation} from './services/documentationGenerator.js';
+import {generateFinalDocumentation, aggregateDocumentation} from './services/documentationGenerator.js';
 import {Command} from 'commander';
 import {join} from 'path';
 import {debug, isDebugEnabled, setDebugMode} from './utils/debug.js';
@@ -50,9 +50,23 @@ async function runPipeline(videoPath: string, outputDir: string, namePrefix: str
     await cleanupAudio(audioPath)
 
     // Stage 4: Generate final documentation
-    const finalDocumentation = await generateFinalDocumentation(
-        batchResponses.join(''),
-        transcriptionText,
+    console.log('\nGenerating documentation (3 versions)...');
+    const docPromises = Array(3).fill(null).map(() =>
+        generateFinalDocumentation(
+            batchResponses.join(''),
+            transcriptionText,
+            {
+                model: "mistral-small-latest",
+                temperature: 0.7 // Higher temperature for variety
+            }
+        )
+    );
+
+    const docVersions = await Promise.all(docPromises);
+
+    // Stage 5: Aggregate documentation versions
+    const finalDocumentation = await aggregateDocumentation(
+        docVersions,
         {
             model: "mistral-small-latest",
             temperature: 0.2
@@ -62,6 +76,17 @@ async function runPipeline(videoPath: string, outputDir: string, namePrefix: str
     // Write final documentation to file
     const outputPath = join(outputDir, `${namePrefix}_output.md`);
     await fspromise.writeFile(outputPath, finalDocumentation, 'utf8');
+
+    // Also write individual versions if debug mode is enabled
+    if (isDebugEnabled()) {
+        for (let i = 0; i < docVersions.length; i++) {
+            const versionPath = join(outputDir, `${namePrefix}_v${i + 1}.md`);
+            const content = docVersions[i];
+            if (content) {
+                await fspromise.writeFile(versionPath, content, 'utf8');
+            }
+        }
+    }
 
     console.log(`\n✓ Pipeline complete!`);
     if (isDebugEnabled()) {
