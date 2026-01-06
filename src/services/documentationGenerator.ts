@@ -1,48 +1,9 @@
 import { mistralClient } from '../utils/mistralClient.js';
-import { DOCUMENTATION_WRITER_SYSTEM_PROMPT, FINAL_WRITER_SYSTEM_PROMPT } from '../prompts.js';
+import { FINAL_WRITER_SYSTEM_PROMPT } from '../prompts.js';
 
 export interface DocumentationGenerationOptions {
     model?: string;
     temperature?: number;
-}
-
-/**
- * Merge frame analysis with transcription to create initial documentation
- * @param batchResponses - Array of analysis responses from frame processing
- * @param options - Generation options including model and temperature
- * @returns Merged documentation content
- */
-export async function mergeAnalysisAndTranscription(
-    batchResponses: string[],
-    options: DocumentationGenerationOptions = {}
-): Promise<string> {
-    console.log('\nMerging frame analysis with transcription...');
-
-    const flattenResponses = batchResponses.join('\n\n');
-
-    const chatMergeResponse = await mistralClient.chat.complete({
-        model: options.model || "mistral-small-latest",
-        temperature: options.temperature || 0.7,
-        messages: [
-            {
-                role: 'system',
-                content: DOCUMENTATION_WRITER_SYSTEM_PROMPT
-            },
-            {
-                role: 'user',
-                content: `Rewrite this UI analysis into a documentation: ${flattenResponses}`
-            }
-        ]
-    });
-
-    if (!chatMergeResponse || !chatMergeResponse.choices[0]?.message?.content) {
-        throw new Error('No response from Mistral API during merge stage');
-    }
-
-    console.log('✓ Merge complete');
-
-    const content = chatMergeResponse.choices[0].message.content;
-    return typeof content === 'string' ? content : JSON.stringify(content);
 }
 
 /**

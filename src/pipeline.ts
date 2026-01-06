@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
 import {cleanupAudio, extractFrames} from './index.js';
-import { promises as fspromise } from 'fs';
-import { processFramesInBatches } from './services/frameProcessor.js';
-import { transcribeAudio } from './services/audioProcessor.js';
-import { mergeAnalysisAndTranscription, generateFinalDocumentation } from './services/documentationGenerator.js';
-import { Command } from 'commander';
-import { join } from 'path';
-import { setDebugMode, debug, isDebugEnabled } from './utils/debug.js';
+import {promises as fspromise} from 'fs';
+import {processFramesInBatches} from './services/frameProcessor.js';
+import {transcribeAudio} from './services/audioProcessor.js';
+import {generateFinalDocumentation} from './services/documentationGenerator.js';
+import {Command} from 'commander';
+import {join} from 'path';
+import {debug, isDebugEnabled, setDebugMode} from './utils/debug.js';
 
 async function runPipeline(videoPath: string, outputDir: string, namePrefix: string) {
     // Stage 1: Extract frames and audio from video
     console.log('Starting frame extraction...');
-    debug('Running pipeline with options:', { videoPath, outputDir, namePrefix });
+    debug('Running pipeline with options:', {videoPath, outputDir, namePrefix});
 
     const result = await extractFrames(videoPath, {
         fps: 1,
@@ -22,18 +22,14 @@ async function runPipeline(videoPath: string, outputDir: string, namePrefix: str
         audioFormat: 'mp3'
     });
 
-    console.log(`
-                        \nExtraction complete!
-                        \nTotal frames extracted: ${result.frameCount}
-                       `);
-
+    console.log(`\nExtraction complete!\nTotal frames extracted: ${result.frameCount}`);
 
     if (result.audioPath) {
         console.log(`Audio extracted to: ${result.audioPath}`);
     }
 
     // Stage 2: Process frames in batches using vision LLM
-    const { batchResponses } = await processFramesInBatches(result.framesBase64, {
+    const {batchResponses} = await processFramesInBatches(result.framesBase64, {
         model: "mistral-small-latest",
         temperature: 0.2,
         batchSize: 8
@@ -52,21 +48,13 @@ async function runPipeline(videoPath: string, outputDir: string, namePrefix: str
         language: "en"
     });
 
+    // Clean up audio files from temporary directory
     const audioPath = String(result.audioPath);
     await cleanupAudio(audioPath)
 
-    // Stage 4: Merge analysis with transcription
-    const mergedContent = await mergeAnalysisAndTranscription(
-        batchResponses,
-        {
-            model: "mistral-small-latest",
-            temperature: 0.7
-        }
-    );
-
-    // Stage 5: Generate final documentation
+    // Stage 4: Generate final documentation
     const finalDocumentation = await generateFinalDocumentation(
-        mergedContent,
+        batchResponses.join(''),
         transcriptionText,
         {
             model: "mistral-small-latest",
