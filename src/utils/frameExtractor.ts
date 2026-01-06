@@ -9,18 +9,16 @@ import type {FrameExtractionConfig, FrameExtractionResult} from '../types.js';
  *
  * @param videoPath - Path to the input video file
  * @param outputPath - Path where audio file should be saved
- * @param audioFormat - Audio format (mp3, wav, aac)
  * @returns Promise that resolves when extraction is complete
  */
 async function extractAudio(
     videoPath: string,
     outputPath: string,
-    audioFormat: 'mp3' | 'wav' | 'aac' = 'mp3'
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         ffmpeg(videoPath)
             .noVideo()
-            .audioCodec(audioFormat === 'mp3' ? 'libmp3lame' : audioFormat === 'wav' ? 'pcm_s16le' : 'aac')
+            .audioCodec('libmp3lame')
             .audioBitrate('192k')
             .output(outputPath)
             .on('start', (commandLine) => {
@@ -48,7 +46,6 @@ async function extractAudio(
  * ```typescript
  * const result = await extractFrames('video.mp4', {
  *   fps: 1,
- *   format: 'png',
  *   extractAudio: true
  * });
  * console.log(`Extracted ${result.frameCount} frames to ${result.outputDir}`);
@@ -62,12 +59,8 @@ export async function extractFrames(
     const {
         fps = 1,
         interval,
-        format = 'png',
         tempDir,
-        filenamePrefix = 'frame',
-        quality = 90,
         extractAudio: shouldExtractAudio = false,
-        audioFormat = 'mp3'
     } = config;
 
     // Validate video file exists
@@ -88,13 +81,13 @@ export async function extractFrames(
     // Extract audio if requested
     let audioPath: string | undefined;
     if (shouldExtractAudio) {
-        audioPath = path.join(outputDir, `audio.${audioFormat}`);
+        audioPath = path.join(outputDir, `audio.mp3`);
         console.log('Extracting audio...');
-        await extractAudio(videoPath, audioPath, audioFormat);
+        await extractAudio(videoPath, audioPath);
     }
 
     // Build output filename pattern
-    const outputPattern = path.join(outputDir, `${filenamePrefix}-%04d.${format}`);
+    const outputPattern = path.join(outputDir, `frame-%04d.png`);
 
     return new Promise((resolve, reject) => {
         let command = ffmpeg(videoPath);
@@ -105,11 +98,6 @@ export async function extractFrames(
             command = command.fps(1 / interval);
         } else {
             command = command.fps(fps);
-        }
-
-        // Set quality for JPEG
-        if (format === 'jpg' || format === 'jpeg') {
-            command = command.outputOptions([`-q:v ${Math.round((100 - quality) / 10)}`]);
         }
 
         command
@@ -127,7 +115,7 @@ export async function extractFrames(
                     // Read all extracted frames
                     const files = await fs.readdir(outputDir);
                     const framePaths = files
-                        .filter(file => file.startsWith(filenamePrefix))
+                        .filter(file => file.startsWith('frame'))
                         .sort()
                         .map(file => path.join(outputDir, file));
 
@@ -138,8 +126,7 @@ export async function extractFrames(
                     for (const framePath of framePaths) {
                         const fileBuffer = await fs.readFile(framePath);
                         const base64String = fileBuffer.toString('base64');
-                        const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
-                        const dataUri = `data:${mimeType};base64,${base64String}`;
+                        const dataUri = `data:image/png;base64,${base64String}`;
                         framesBase64.push(dataUri);
                     }
 

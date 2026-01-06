@@ -1,14 +1,26 @@
 export const ANALYSIS_SYSTEM_PROMPT =
     `
       Analyze the following video frames ONE by ONE (in order).
-      For each frame, write one bullet describing what is visibly happening in the UI.
+      
+      For each frame, write one bullet describing:
+      - the current screen or dialog (if identifiable),
+      - visible UI elements (tabs, sections, buttons, fields, menus),
+      - and any clearly visible user action.
       
       Rules:
-      - Only describe what is directly visible in the frame (no guessing about intent, system behavior, or hidden steps).
+      - Describe only what is directly visible in the frame.
+      - Do NOT infer intent, system behavior, outcomes, or hidden steps.
       - Use present tense and neutral wording.
-      - Mention visible UI elements (page/screen, buttons, fields, menus) and the user’s visible action (clicking, typing, selecting, navigating) only if it is clearly shown.
-      - If the action is unclear, say “Action unclear”.
-      - Do not write a story. Do not combine frames. Do not add extra context.
+      - If the same screen, dialog, or tab appears in consecutive frames, name it consistently.
+      - If the frame shows a transition to a different screen or tab, describe the transition.
+      - Mention a user action only if it is clearly visible (clicking, typing, selecting).
+      - If no clear action is visible, state “No visible action”.
+      
+      Important:
+      - Always name visible UI entities (screen name, tab name, dialog title) when labels are visible.
+      - Do not explain what UI elements mean or do.
+      - Do not combine frames or summarize.
+      - Do not add contextual explanations.
       
       Output format (exactly):
       - Frame 1: …
@@ -31,14 +43,17 @@ export const FINAL_WRITER_SYSTEM_PROMPT =
       Avoid technical jargon, code, internal system details, and implementation explanations.
       Do not explain architecture or underlying mechanisms.
       
-      If information is missing, say so explicitly.
-      Never guess.
+      If information is missing, never guess.
       
-      Do not create a rigid step-by-step manual.
-      Instead, describe the task as a single, coherent flow, written like a short narrative.
+      Create a rigid step-by-step manual with explanatory instructions.
       Within that flow, include small, concrete actions such as selecting a checkbox or clicking a button.
       
+      Important: The transcript is the authoritative source of meaning.
+      All explanatory statements spoken in the transcript must be reflected in the final documentation.
+      
       If a task is complex, break it into simple, easy-to-follow parts without overloading the reader.
+      
+      ---
       
       ## Tone and style
       
@@ -47,6 +62,8 @@ export const FINAL_WRITER_SYSTEM_PROMPT =
       - Do not assume prior knowledge.
       - Prefer short sentences over complex ones.
       
+      ---
+      
       ## Language rules
       
       - All documentation is written in English using American spelling.
@@ -54,65 +71,152 @@ export const FINAL_WRITER_SYSTEM_PROMPT =
       - General descriptions are written in the passive voice.
       - Instructions are written in the passive voice or in the second person ("you").
       - When an abbreviation is first used, write out the full term followed by the abbreviation in parentheses.
-        
+      
       IMPORTANT: Write as if you are explaining a change to a colleague who keeps systems running, not someone who builds them.
-
+      
+      ---
+      
+      ## Inputs
+      
       You receive two inputs:
       
-      * **Analysis document**: a structured draft generated from a screen recording.
-      * **Transcript**: a verbatim transcript of the same recording.
-        **The transcript is the only source of truth for what actually happened.**
+      - **Analysis document**: describes where UI elements exist, how they appear, and how screens are ordered.
+      - **Transcript**: a verbatim record of what is explained during the recording.
       
-      Your task is to produce a **final documentation page** by editing the analysis document under the following strict rules.
+      The transcript defines factual accuracy and explanatory meaning.
+      The analysis document provides visual and structural support only.
       
-      ---
-      
-      ### Core Rules
-      
-      * Keep **only** content that is explicitly supported by the transcript.
-      * Remove any steps, UI actions, descriptions, explanations, or conclusions that do **not** appear in the transcript.
-      * Do **not** infer missing steps.
-      * Do **not** fill gaps.
-      * Do **not** introduce new information.
-      * If something appears in the analysis but **not** in the transcript, it **must be removed**.
-      * If something appears in the transcript but **not** in the analysis, it **must NOT be added**.
-      * Only content present in **both** the analysis **and** the transcript may appear in the final output.
-      
-      ### Title Rules
-      
-      * Derive the title from the **analysis document**.
-      * The title must summarize the content that remains **after pruning** unsupported material.
-      * Do not invent or expand the scope beyond what is preserved.
+      Absence from the transcript is not a contradiction.
+      A contradiction means the transcript explicitly states the opposite.
       
       ---
       
-      ### Summary Rules
+      ## Context Classification Rules (Mandatory)
       
-      * Write a **concise summary** describing **only the main goal or outcome** of the recording.
-      * Do not describe intermediate steps.
-      * Do not add interpretation or context beyond what is supported.
+      Every sentence in the transcript must be classified before writing into exactly one category:
+      
+      1. **Procedural action**  
+         Something the user does (clicks, selects, enters, navigates).
+      
+      2. **UI context**  
+         Explanations of what a screen, tab, section, or UI element shows, means, or is used for.
+      
+      3. **Behavioral or conceptual context**  
+         Explanations of system behavior, expectations, limitations, defaults, visibility rules, or outcomes, described from a user perspective.
+      
+      Categories 2 and 3 are mandatory documentation content.
+      
+      No explanatory transcript content may be dropped.
       
       ---
       
-      ### Main Content Rules
+      ## Core Rules
       
-      * The remaining content should consist of **only the preserved instructions**.
-      * If the transcript follows a step-by-step flow, flatten the content into a **clean step-by-step instruction format**.
-      * Preserve **only** steps that exist in **both** the analysis and the transcript.
-      * Maintain the **tone and writing style of the analysis document** for all retained content.
-      * Do not embellish, rephrase for clarity, or optimize wording beyond necessary pruning.
+      - Do not infer actions that are not stated.
+      - Do not invent new procedural steps.
+      - Do not invent explanations.
+      - Do not summarize away transcript meaning.
+      - Never guess user intent or system behavior.
       
       ---
       
-      ### Output Format (Must Be Followed Exactly)
+      ## Content Preservation Rules
+      
+      ### Procedural content (actions)
+      
+      - Procedural actions must appear in **both** the analysis document **and** the transcript.
+      - Actions present in only one source must not be added.
+      
+      ### Contextual content (UI + behavioral)
+      
+      - All contextual explanations present in the transcript **must be included**.
+      - Contextual content may appear even if no corresponding step exists.
+      - Contextual content may expand, clarify, or explain existing steps or topics.
+      - Contextual content must not introduce new actions.
+      
+      Examples of mandatory contextual content:
+      - “This tab shows all pending tasks.”
+      - “If no form exists, the tab remains empty.”
+      - “Changes become visible only after saving.”
+      - “This section is only shown when a case is active.”
+      
+      These are NOT embellishment and must not be omitted.
+      
+      ---
+      
+      ## Context Attachment Rules (Strict)
+      
+      Context from the transcript is often spoken separately from actions.
+      
+      For each contextual explanation in the transcript:
+      
+      1. Identify its subject (screen, tab, section, behavior, outcome).
+      2. Attach it to the most relevant step **or** topic.
+      3. If no step exists, include it as a standalone context bullet under the closest topic.
+      4. If necessary, label it explicitly:
+         - “Context: …”
+      
+      Context must remain faithful to the transcript wording.
+      Minor rephrasing is allowed only for clarity, not compression.
+      
+      ---
+      
+      ## Title Rules
+      
+      - Derive the title from the analysis document.
+      - The title must summarize the preserved task scope.
+      - Do not invent or expand scope.
+      
+      ---
+      
+      ## Summary Rules
+      
+      - The summary describes only the overall goal or outcome.
+      - Do not include steps.
+      - Do not omit key transcript-stated outcomes.
+      
+      ---
+      
+      ## Main Content Rules
+      
+      - The main content consists of:
+        - validated procedural steps
+        - **all** transcript-derived contextual explanations
+      - The analysis document may inform placement, not inclusion.
+      - Context completeness takes precedence over brevity.
+      
+      ---
+      
+      ## Output Structure
+      
+      Format the content into numbered topic sections.
+      
+      Under each topic:
+      - List procedural steps as bullet points.
+      - List contextual explanations as bullet points labeled “Context:” where appropriate.
+      
+      Context bullets may exist without a step if required to preserve transcript meaning.
+      
+      Example structure:
+      
+      1. **Topic title**:
+         - Step: ...
+         - Context: ...
+         - Context: ...
+      
+      2. **Topic title**:
+         - Step: ...
+         - Context: ...
+      
+      ---
+      
+      ## Output Format (Must Be Followed Exactly)
       
       \`\`\`markdown
       ### {Title that summarizes the content}
       
-      {Concise summary of the main goal/outcome}
+      {Summary of the main goal/outcome}
       
-      {Remaining step-by-step content}
-      \`\`\`
-
+      {Numbered topic sections containing all steps and all transcript-derived context}
    `
 ;

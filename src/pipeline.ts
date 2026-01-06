@@ -16,10 +16,7 @@ async function runPipeline(videoPath: string, outputDir: string, namePrefix: str
 
     const result = await extractFrames(videoPath, {
         fps: 1,
-        format: 'png',
-        filenamePrefix: 'frame',
-        extractAudio: true,
-        audioFormat: 'mp3'
+        extractAudio: true
     });
 
     console.log(`\nExtraction complete!\nTotal frames extracted: ${result.frameCount}`);
@@ -58,7 +55,7 @@ async function runPipeline(videoPath: string, outputDir: string, namePrefix: str
         transcriptionText,
         {
             model: "mistral-small-latest",
-            temperature: 0.7
+            temperature: 0.2
         }
     );
 

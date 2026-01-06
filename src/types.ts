@@ -15,37 +15,19 @@ export interface FrameExtractionConfig {
    * Image format for extracted frames
    * @default 'png'
    */
-  format?: 'png' | 'jpg' | 'jpeg';
+  format?: 'png';
   
   /**
    * Custom temporary directory path
    * If not provided, a system temp directory will be created
    */
   tempDir?: string;
-  
-  /**
-   * Prefix for frame filenames
-   * @default 'frame'
-   */
-  filenamePrefix?: string;
-  
-  /**
-   * Quality for jpg/jpeg format (1-100)
-   * @default 90
-   */
-  quality?: number;
 
   /**
    * Extract audio from video
    * @default false
    */
   extractAudio?: boolean;
-
-  /**
-   * Audio format
-   * @default 'mp3'
-   */
-  audioFormat?: 'mp3' | 'wav' | 'aac';
 }
 
 export interface FrameExtractionResult {
