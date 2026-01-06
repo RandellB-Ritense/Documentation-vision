@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
+
+const STORAGE_KEY = 'doc-vision-session';
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -12,9 +14,48 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [statusLog, setStatusLog] = useState<{message: string, isDebug?: boolean, timestamp: string}[]>([]);
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({});
+  const [abortController, setAbortController] = useState<AbortController | null>(null);
+
+  useEffect(() => {
+    const savedSession = localStorage.getItem(STORAGE_KEY);
+    if (savedSession) {
+      try {
+        const { result, statusLog, debugMode } = JSON.parse(savedSession);
+        setResult(result);
+        setStatusLog(statusLog);
+        setDebugMode(debugMode);
+        setProgress(100);
+      } catch (e) {
+        console.error('Failed to load saved session', e);
+      }
+    }
+  }, []);
 
   const toggleAccordion = (key: string) => {
     setOpenAccordions(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleClear = () => {
+    setFile(null);
+    setResult(null);
+    setError(null);
+    setProgress(0);
+    setStatusLog([]);
+    localStorage.removeItem(STORAGE_KEY);
+    // Reset file input manually since it's uncontrolled for the value
+    const fileInput = document.getElementById('video') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+  };
+
+  const handleAbort = () => {
+    if (abortController) {
+      abortController.abort();
+      setAbortController(null);
+      setStatusLog(prev => [...prev, { 
+        message: 'Processing aborted by user', 
+        timestamp: new Date().toLocaleTimeString() 
+      }]);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,11 +65,15 @@ export default function Home() {
       return;
     }
 
+    const controller = new AbortController();
+    setAbortController(controller);
     setIsLoading(true);
     setError(null);
     setResult(null);
     setProgress(0);
-    setStatusLog([{ message: 'Starting...', timestamp: new Date().toLocaleTimeString() }]);
+    const initialLog = [{ message: 'Starting...', timestamp: new Date().toLocaleTimeString() }];
+    setStatusLog(initialLog);
+    localStorage.removeItem(STORAGE_KEY);
 
     const formData = new FormData();
     formData.append('video', file);
@@ -38,6 +83,7 @@ export default function Home() {
       const response = await fetch('/api/process', {
         method: 'POST',
         body: formData,
+        signal: controller.signal,
       });
 
       if (!response.ok) {
@@ -66,14 +112,26 @@ export default function Home() {
               if (data.progress !== -1) {
                 setProgress(data.progress);
               }
-              setStatusLog(prev => [...prev, { 
-                message: data.message, 
-                isDebug: data.isDebug, 
-                timestamp: new Date().toLocaleTimeString() 
-              }]);
+              setStatusLog(prev => {
+                const newLog = [...prev, { 
+                  message: data.message, 
+                  isDebug: data.isDebug, 
+                  timestamp: new Date().toLocaleTimeString() 
+                }];
+                return newLog;
+              });
             } else if (data.type === 'complete') {
               setResult(data.result);
               setProgress(100);
+              // Save to local storage after completion
+              setStatusLog(currentLog => {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                  result: data.result,
+                  statusLog: currentLog,
+                  debugMode
+                }));
+                return currentLog;
+              });
             } else if (data.type === 'error') {
               throw new Error(data.message);
             }
@@ -81,9 +139,14 @@ export default function Home() {
         }
       }
     } catch (err: any) {
-      setError(err.message);
+      if (err.name === 'AbortError') {
+        console.log('Fetch aborted');
+      } else {
+        setError(err.message);
+      }
     } finally {
       setIsLoading(false);
+      setAbortController(null);
     }
   };
 
@@ -114,18 +177,54 @@ export default function Home() {
 
         <button 
           type="submit" 
-          disabled={isLoading}
+          disabled={isLoading || !file}
           style={{
             padding: '0.5rem 1rem',
-            backgroundColor: isLoading ? '#ccc' : '#0070f3',
+            backgroundColor: isLoading || !file ? '#ccc' : '#0070f3',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
-            cursor: isLoading ? 'not-allowed' : 'pointer'
+            cursor: isLoading || !file ? 'not-allowed' : 'pointer',
+            marginRight: '10px'
           }}
         >
           {isLoading ? 'Processing...' : 'Run Pipeline'}
         </button>
+
+        {isLoading && (
+          <button 
+            type="button" 
+            onClick={handleAbort}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#ff4d4f',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              marginRight: '10px'
+            }}
+          >
+            Abort
+          </button>
+        )}
+
+        {!isLoading && (result || statusLog.length > 0) && (
+          <button 
+            type="button" 
+            onClick={handleClear}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#f0f0f0',
+              color: '#333',
+              border: '1px solid #d9d9d9',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Start New
+          </button>
+        )}
       </form>
 
       {isLoading && (
@@ -204,6 +303,7 @@ export default function Home() {
                     padding: '1rem',
                     textAlign: 'left',
                     background: '#f8f9fa',
+                    color: '#333',
                     border: 'none',
                     borderBottom: openAccordions['analysis'] ? '1px solid #ddd' : 'none',
                     cursor: 'pointer',
@@ -236,6 +336,7 @@ export default function Home() {
                       padding: '1rem',
                       textAlign: 'left',
                       background: '#f8f9fa',
+                      color: '#333',
                       border: 'none',
                       borderBottom: openAccordions[`version-${i}`] ? '1px solid #ddd' : 'none',
                       cursor: 'pointer',
