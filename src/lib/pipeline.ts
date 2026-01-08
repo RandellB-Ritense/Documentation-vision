@@ -91,7 +91,7 @@ export async function runPipeline(
     const audioPath = String(result.audioPath);
     await cleanupAudio(audioPath)
 
-    // Stage 4: Generate final documentation
+    // Stage 4: Generate documentation
     notify(75, 'Generating documentation versions...');
     const docPromises = Array(3).fill(null).map(() =>
         generateFinalDocumentation(

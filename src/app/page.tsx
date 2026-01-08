@@ -282,7 +282,7 @@ export default function Home() {
           disabled={isLoading || !file}
           style={{
             padding: '0.5rem 1rem',
-            backgroundColor: isLoading || !file ? '#ccc' : '#0070f3',
+            backgroundColor: isLoading || !file ? '#ccc' : '#1f5391',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
@@ -347,20 +347,23 @@ export default function Home() {
           }}>
             <div style={{ 
               width: `${progress}%`, 
-              backgroundColor: '#0070f3', 
+              backgroundColor: '#1f5391', 
               height: '100%', 
               transition: 'width 0.3s ease' 
             }} />
           </div>
           <div style={{ 
-            maxHeight: '300px', 
+            maxHeight: isLoading ? '300px' : '0px', 
             overflowY: 'auto', 
             backgroundColor: '#f8f9fa', 
-            padding: '1rem', 
+            padding: isLoading ? '1rem' : '0', 
             borderRadius: '4px',
             fontSize: '0.9rem',
-            border: '1px solid #ddd',
-            fontFamily: 'monospace'
+            border: isLoading ? '1px solid #ddd' : 'none',
+            fontFamily: 'monospace',
+            transition: 'all 0.3s ease',
+            opacity: isLoading ? 1 : 0,
+            pointerEvents: isLoading ? 'auto' : 'none'
           }}>
             {statusLog.map((log, i) => (
               <div key={i} style={{ 
@@ -428,7 +431,7 @@ export default function Home() {
                 {chatMessages.map((msg, i) => (
                   <div key={i} style={{ 
                     alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                    backgroundColor: msg.role === 'user' ? '#0070f3' : '#e9ecef',
+                    backgroundColor: msg.role === 'user' ? '#1f5391' : '#e9ecef',
                     color: msg.role === 'user' ? 'white' : '#333',
                     padding: '0.6rem 1rem',
                     borderRadius: '12px',
