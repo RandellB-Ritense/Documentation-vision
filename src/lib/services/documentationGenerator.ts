@@ -1,6 +1,7 @@
 import { mistralClient } from '../utils/mistralClient';
 import { FINAL_WRITER_SYSTEM_PROMPT, AGGREGATOR_SYSTEM_PROMPT, REFINEMENT_SYSTEM_PROMPT } from '../prompts';
 import { ChatMessage } from '../types';
+import { debug } from '../utils/debug';
 
 export interface DocumentationGenerationOptions {
     model?: string;
@@ -19,7 +20,7 @@ export async function generateFinalDocumentation(
     transcriptionText: string,
     options: DocumentationGenerationOptions = {}
 ): Promise<string> {
-    console.log('Generating documentation version...');
+    debug('Generating documentation version...');
 
     const chatResponse = await mistralClient.chat.complete({
         model: options.model || "mistral-small-latest",
@@ -71,7 +72,7 @@ export async function aggregateDocumentation(
     documentationVersions: string[],
     options: DocumentationGenerationOptions = {}
 ): Promise<string> {
-    console.log('\nAggregating documentation versions...');
+    debug('\nAggregating documentation versions...');
 
     const versionsText = documentationVersions
         .map((doc, index) => `--- DOCUMENT VERSION ${index + 1} ---\n${doc}`)
@@ -96,7 +97,7 @@ export async function aggregateDocumentation(
         throw new Error('No response from Mistral API during aggregation stage');
     }
 
-    console.log('✓ Final aggregated documentation complete');
+    debug('✓ Final aggregated documentation complete');
 
     const content = chatResponse.choices[0].message.content;
     return typeof content === 'string' ? content : JSON.stringify(content);
@@ -114,7 +115,7 @@ export async function refineDocumentation(
     messages: ChatMessage[],
     options: DocumentationGenerationOptions = {}
 ): Promise<string> {
-    console.log('Refining documentation...');
+    debug('Refining documentation...');
 
     const chatResponse = await mistralClient.chat.complete({
         model: options.model || "mistral-small-latest",

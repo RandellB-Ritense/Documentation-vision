@@ -46,7 +46,7 @@ export default function Home() {
         setProgress(100);
         if (elapsedTime) setElapsedTime(elapsedTime);
       } catch (e) {
-        console.error('Failed to load saved session', e);
+        // Failed to load saved session
       }
     }
   }, []);
@@ -181,7 +181,7 @@ export default function Home() {
       }
     } catch (err: any) {
       if (err.name === 'AbortError') {
-        console.log('Fetch aborted');
+        // Aborted
       } else {
         setError(err.message);
       }
@@ -390,13 +390,21 @@ export default function Home() {
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
             <div style={{ flex: '1', minWidth: '0' }}>
               <h3>Generated Documentation</h3>
-              <div style={{ border: '1px solid #ccc', borderRadius: '4px', overflow: 'hidden', marginBottom: '2rem' }}>
+              <div style={{ 
+                border: '1px solid #ccc', 
+                borderRadius: '4px', 
+                overflow: 'hidden', 
+                marginBottom: '2rem',
+                opacity: isChatLoading ? 0.6 : 1,
+                transition: 'opacity 0.2s ease-in-out',
+                backgroundColor: isChatLoading ? '#f5f5f5' : 'transparent'
+              }}>
                 <Editor
                   height="700px"
                   defaultLanguage="markdown"
                   value={result.finalDocumentation}
                   options={{
-                    readOnly: true,
+                    readOnly: isChatLoading,
                     minimap: { enabled: false },
                     wordWrap: 'on',
                     scrollBeyondLastLine: false,

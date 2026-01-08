@@ -4,6 +4,8 @@ import path from 'path';
 import os from 'os';
 import type {FrameExtractionConfig, FrameExtractionResult} from '../types';
 
+import {debug} from './debug';
+
 /**
  * Extracts audio from a video file
  *
@@ -22,10 +24,10 @@ async function extractAudio(
             .audioBitrate('192k')
             .output(outputPath)
             .on('start', (commandLine) => {
-                console.log('Extracting audio:', commandLine);
+                debug('Extracting audio:', commandLine);
             })
             .on('end', () => {
-                console.log('Audio extraction complete');
+                debug('Audio extraction complete');
                 resolve();
             })
             .on('error', (err) => {
@@ -82,7 +84,7 @@ export async function extractFrames(
     let audioPath: string | undefined;
     if (shouldExtractAudio) {
         audioPath = path.join(outputDir, `audio.mp3`);
-        console.log('Extracting audio...');
+        debug('Extracting audio...');
         await extractAudio(videoPath, audioPath);
     }
 
@@ -103,11 +105,11 @@ export async function extractFrames(
         command
             .output(outputPattern)
             .on('start', (commandLine) => {
-                console.log('FFmpeg command:', commandLine);
+                debug('FFmpeg command:', commandLine);
             })
             .on('progress', (progress) => {
                 if (progress.percent) {
-                    console.log(`Processing: ${Math.round(progress.percent)}% done`);
+                    debug(`Processing: ${Math.round(progress.percent)}% done`);
                 }
             })
             .on('end', async () => {
@@ -120,7 +122,7 @@ export async function extractFrames(
                         .map(file => path.join(outputDir, file));
 
                     // Convert frames to base64
-                    console.log('Converting frames to base64...');
+                    debug('Converting frames to base64...');
                     const framesBase64: string[] = [];
 
                     for (const framePath of framePaths) {
@@ -130,16 +132,16 @@ export async function extractFrames(
                         framesBase64.push(dataUri);
                     }
 
-                    console.log(`Converted ${framesBase64.length} frames to base64`);
+                    debug(`Converted ${framesBase64.length} frames to base64`);
 
                     // Clean up temp frame files (but keep audio if extracted)
-                    console.log('Cleaning up temporary frame files...');
+                    debug('Cleaning up temporary frame files...');
                     for (const framePath of framePaths) {
                         await fs.unlink(framePath);
                     }
 
 
-                    console.log('Temporary frame files cleaned up');
+                    debug('Temporary frame files cleaned up');
 
                     const result: FrameExtractionResult = {
                         outputDir,

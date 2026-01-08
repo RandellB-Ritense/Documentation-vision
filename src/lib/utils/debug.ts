@@ -19,7 +19,6 @@ export function isDebugEnabled(): boolean {
 
 export function debug(...args: any[]): void {
     if (debugEnabled) {
-        console.log('[DEBUG]', ...args);
         if (logCallback) {
             logCallback('[DEBUG]', ...args);
         }
@@ -28,7 +27,6 @@ export function debug(...args: any[]): void {
 
 export function debugError(...args: any[]): void {
     if (debugEnabled) {
-        console.error('[DEBUG ERROR]', ...args);
         if (logCallback) {
             logCallback('[DEBUG ERROR]', ...args);
         }
@@ -37,7 +35,6 @@ export function debugError(...args: any[]): void {
 
 export function debugWarn(...args: any[]): void {
     if (debugEnabled) {
-        console.warn('[DEBUG WARN]', ...args);
         if (logCallback) {
             logCallback('[DEBUG WARN]', ...args);
         }
@@ -46,12 +43,12 @@ export function debugWarn(...args: any[]): void {
 
 export function debugTime(label: string): void {
     if (debugEnabled) {
-        console.time(`[DEBUG] ${label}`);
+        // console.time removed as it has no on-screen equivalent in this utility
     }
 }
 
 export function debugTimeEnd(label: string): void {
     if (debugEnabled) {
-        console.timeEnd(`[DEBUG] ${label}`);
+        // console.timeEnd removed as it has no on-screen equivalent in this utility
     }
 }

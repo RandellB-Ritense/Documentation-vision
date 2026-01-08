@@ -39,7 +39,6 @@ export async function runPipeline(
         if (onProgress) {
             onProgress({ stage: message, progress, message });
         }
-        console.log(message);
     };
 
     // Stage 1: Extract frames and audio from video

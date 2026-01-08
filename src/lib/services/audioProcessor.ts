@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { mistralClient } from '../utils/mistralClient';
+import { debug } from '../utils/debug';
 
 export interface AudioTranscriptionOptions {
     model?: string;
@@ -17,11 +18,11 @@ export async function transcribeAudio(
     options: AudioTranscriptionOptions = {}
 ): Promise<string> {
     if (!audioPath) {
-        console.log('No audio file provided, skipping transcription');
+        debug('No audio file provided, skipping transcription');
         return '';
     }
 
-    console.log('Starting audio transcription...');
+    debug('Starting audio transcription...');
 
     const audio_file = fs.readFileSync(audioPath);
     const transcriptionResponse = await mistralClient.audio.transcriptions.complete({
@@ -34,7 +35,7 @@ export async function transcribeAudio(
     });
 
     const transcriptionText = transcriptionResponse.text || '';
-    console.log('✓ Audio transcription complete');
+    debug('✓ Audio transcription complete');
 
     return transcriptionText;
 }

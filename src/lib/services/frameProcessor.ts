@@ -28,7 +28,7 @@ export async function processFramesInBatches(
     const BATCH_SIZE = options.batchSize || 8;
     const frameBatches = chunkArray(framesBase64, BATCH_SIZE);
 
-    console.log(`\nProcessing ${frameBatches.length} batches of up to ${BATCH_SIZE} frames each...`);
+    debug(`\nProcessing ${frameBatches.length} batches of up to ${BATCH_SIZE} frames each...`);
     debug('Frame processing options:', options);
     debug('Total frames:', framesBase64.length);
     debug('Batch size:', BATCH_SIZE);
@@ -41,7 +41,7 @@ export async function processFramesInBatches(
         if (!batch) continue;
         
         const batchNumber = i + 1;
-        console.log(`\nProcessing batch ${batchNumber}/${frameBatches.length}`);
+        debug(`\nProcessing batch ${batchNumber}/${frameBatches.length}`);
         debug(`Batch ${batchNumber} contains ${batch.length} frames`);
         debugTime(`Batch ${batchNumber} processing`);
 
@@ -67,7 +67,7 @@ export async function processFramesInBatches(
         });
 
         if (!imageProcessResponse || !imageProcessResponse.choices[0]?.message?.content) {
-            console.warn(`Warning: No response for batch ${batchNumber}`);
+            debug(`Warning: No response for batch ${batchNumber}`);
             debugTimeEnd(`Batch ${batchNumber} processing`);
             continue;
         }
@@ -82,10 +82,10 @@ export async function processFramesInBatches(
         }
 
         debugTimeEnd(`Batch ${batchNumber} processing`);
-        console.log(`✓ Batch ${batchNumber} complete`);
+        debug(`✓ Batch ${batchNumber} complete`);
     }
 
-    console.log(`\nAll batches processed!`);
+    debug(`\nAll batches processed!`);
 
     return {
         batchResponses,
