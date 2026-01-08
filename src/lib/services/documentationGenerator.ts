@@ -1,5 +1,6 @@
 import { mistralClient } from '../utils/mistralClient';
-import { FINAL_WRITER_SYSTEM_PROMPT, AGGREGATOR_SYSTEM_PROMPT } from '../prompts';
+import { FINAL_WRITER_SYSTEM_PROMPT, AGGREGATOR_SYSTEM_PROMPT, REFINEMENT_SYSTEM_PROMPT } from '../prompts';
+import { ChatMessage } from '../types';
 
 export interface DocumentationGenerationOptions {
     model?: string;
@@ -96,6 +97,44 @@ export async function aggregateDocumentation(
     }
 
     console.log('✓ Final aggregated documentation complete');
+
+    const content = chatResponse.choices[0].message.content;
+    return typeof content === 'string' ? content : JSON.stringify(content);
+}
+
+/**
+ * Refine documentation based on user feedback
+ * @param currentDocument - The current state of the documentation
+ * @param messages - Chat history including the latest user request
+ * @param options - Generation options
+ * @returns Refined documentation
+ */
+export async function refineDocumentation(
+    currentDocument: string,
+    messages: ChatMessage[],
+    options: DocumentationGenerationOptions = {}
+): Promise<string> {
+    console.log('Refining documentation...');
+
+    const chatResponse = await mistralClient.chat.complete({
+        model: options.model || "mistral-small-latest",
+        temperature: options.temperature || 0.2,
+        messages: [
+            {
+                role: 'system',
+                content: REFINEMENT_SYSTEM_PROMPT
+            },
+            {
+                role: 'user',
+                content: `CURRENT DOCUMENT:\n\n${currentDocument}`
+            },
+            ...messages
+        ]
+    });
+
+    if (!chatResponse || !chatResponse.choices[0]?.message?.content) {
+        throw new Error('No response from Mistral API during refinement stage');
+    }
 
     const content = chatResponse.choices[0].message.content;
     return typeof content === 'string' ? content : JSON.stringify(content);

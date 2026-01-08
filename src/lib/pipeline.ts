@@ -62,7 +62,15 @@ export async function runPipeline(
     const {batchResponses} = await processFramesInBatches(result.framesBase64, {
         model: "mistral-small-latest",
         temperature: 0.2,
-        batchSize: 8
+        batchSize: 8,
+        onProgress: (current, total) => {
+            // Map progress to 30% - 55% range
+            const startProgress = 30;
+            const endProgress = 55;
+            const range = endProgress - startProgress;
+            const incrementalProgress = Math.round(startProgress + (current / total) * range);
+            notify(incrementalProgress, `Processing batch ${current}/${total}...`);
+        }
     });
 
     // Only write analysis file if debug mode is enabled and outputDir is provided

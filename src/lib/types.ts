@@ -62,3 +62,13 @@ export interface FrameExtractionResult {
    */
   fps?: number;
 }
+
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+export interface RefineDocumentationRequest {
+  currentDocument: string;
+  messages: ChatMessage[];
+}

@@ -7,6 +7,7 @@ export interface FrameProcessingOptions {
     batchSize?: number;
     model?: string;
     temperature?: number;
+    onProgress?: (current: number, total: number) => void;
 }
 
 export interface FrameProcessingResult {
@@ -75,6 +76,10 @@ export async function processFramesInBatches(
         const content = imageProcessResponse.choices[0].message.content;
         batchResponses.push(`Batch ${batchNumber}:\n${content}\n\n`);
         debug(`Batch ${batchNumber} response length:`, content.length, 'characters');
+
+        if (options.onProgress) {
+            options.onProgress(batchNumber, frameBatches.length);
+        }
 
         debugTimeEnd(`Batch ${batchNumber} processing`);
         console.log(`✓ Batch ${batchNumber} complete`);
