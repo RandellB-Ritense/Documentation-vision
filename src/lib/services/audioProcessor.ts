@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { mistralClient } from '../utils/mistralClient';
-import { debug } from '../utils/debug';
+import {mistralClient} from '../utils/mistralClient';
+import {debug} from '../utils/debug';
 
 export interface AudioTranscriptionOptions {
     model?: string;

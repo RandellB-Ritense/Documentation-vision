@@ -1,92 +1,92 @@
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f9;
-  color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 main {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  text-align: center;
-  color: #1f5391;
+    text-align: center;
+    color: #1f5391;
 }
 
 .form-group {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 input[type="text"],
 input[type="file"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 .toggle-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  background-color: #1f5391;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    width: 100%;
+    padding: 12px;
+    background-color: #1f5391;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 button:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 .result {
-  margin-top: 30px;
-  padding: 20px;
-  background: #e7f3ff;
-  border-left: 5px solid #1f5391;
-  border-radius: 4px;
+    margin-top: 30px;
+    padding: 20px;
+    background: #e7f3ff;
+    border-left: 5px solid #1f5391;
+    border-radius: 4px;
 }
 
 .error {
-  margin-top: 30px;
-  padding: 20px;
-  background: #ffe7e7;
-  border-left: 5px solid #ff0000;
-  border-radius: 4px;
-  color: #d00;
+    margin-top: 30px;
+    padding: 20px;
+    background: #ffe7e7;
+    border-left: 5px solid #ff0000;
+    border-radius: 4px;
+    color: #d00;
 }
 
 pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  background: #eee;
-  padding: 10px;
-  border-radius: 4px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: #eee;
+    padding: 10px;
+    border-radius: 4px;
 }

@@ -2,8 +2,7 @@ import {cleanupAudio, extractFrames} from './index';
 import {promises as fspromise} from 'fs';
 import {processFramesInBatches} from './services/frameProcessor';
 import {transcribeAudio} from './services/audioProcessor';
-import {generateFinalDocumentation, aggregateDocumentation} from './services/documentationGenerator';
-import {Command} from 'commander';
+import {aggregateDocumentation, generateFinalDocumentation} from './services/documentationGenerator';
 import {join} from 'path';
 import {debug, isDebugEnabled, setDebugMode, setLogCallback} from './utils/debug';
 
@@ -15,9 +14,9 @@ export type ProgressUpdate = {
 };
 
 export async function runPipeline(
-    videoPath: string, 
-    outputDir?: string, 
-    namePrefix?: string, 
+    videoPath: string,
+    outputDir?: string,
+    namePrefix?: string,
     debugMode: boolean = false,
     onProgress?: (update: ProgressUpdate) => void
 ) {
@@ -25,19 +24,19 @@ export async function runPipeline(
         setDebugMode(true);
         setLogCallback((...args: any[]) => {
             if (onProgress) {
-                const message = args.map(arg => 
+                const message = args.map(arg =>
                     typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
                 ).join(' ');
-                onProgress({ stage: 'DEBUG', progress: -1, message, isDebug: true });
+                onProgress({stage: 'DEBUG', progress: -1, message, isDebug: true});
             }
         });
     } else {
         setLogCallback(null);
     }
-    
+
     const notify = (progress: number, message: string) => {
         if (onProgress) {
-            onProgress({ stage: message, progress, message });
+            onProgress({stage: message, progress, message});
         }
     };
 

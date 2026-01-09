@@ -1,7 +1,7 @@
-import { mistralClient } from '../utils/mistralClient';
-import { FINAL_WRITER_SYSTEM_PROMPT, AGGREGATOR_SYSTEM_PROMPT, REFINEMENT_SYSTEM_PROMPT } from '../prompts';
-import { ChatMessage } from '../types';
-import { debug } from '../utils/debug';
+import {mistralClient} from '../utils/mistralClient';
+import {AGGREGATOR_SYSTEM_PROMPT, FINAL_WRITER_SYSTEM_PROMPT, REFINEMENT_SYSTEM_PROMPT} from '../prompts';
+import {ChatMessage} from '../types';
+import {debug} from '../utils/debug';
 
 export interface DocumentationGenerationOptions {
     model?: string;

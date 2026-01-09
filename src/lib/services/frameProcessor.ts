@@ -1,7 +1,7 @@
-import { mistralClient } from '../utils/mistralClient';
-import { chunkArray } from '../utils/chunker';
-import { ANALYSIS_SYSTEM_PROMPT } from '../prompts';
-import { debug, debugTime, debugTimeEnd } from '../utils/debug';
+import {mistralClient} from '../utils/mistralClient';
+import {chunkArray} from '../utils/chunker';
+import {ANALYSIS_SYSTEM_PROMPT} from '../prompts';
+import {debug, debugTime, debugTimeEnd} from '../utils/debug';
 
 export interface FrameProcessingOptions {
     batchSize?: number;
@@ -39,7 +39,7 @@ export async function processFramesInBatches(
     for (let i = 0; i < frameBatches.length; i++) {
         const batch = frameBatches[i];
         if (!batch) continue;
-        
+
         const batchNumber = i + 1;
         debug(`\nProcessing batch ${batchNumber}/${frameBatches.length}`);
         debug(`Batch ${batchNumber} contains ${batch.length} frames`);
